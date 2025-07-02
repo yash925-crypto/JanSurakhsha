@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JanSuraksha AI - Emergency Assistant</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-danger fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">
+                <i class="fas fa-shield-alt me-2"></i>JanSuraksha AI
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <button class="btn btn-outline-light btn-sm" id="languageToggle">
+                            <i class="fas fa-language me-1"></i>
+                            <span id="langText">हिंदी</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid mt-5 pt-4">
+        <!-- Emergency SOS Section -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="emergency-sos text-center p-4 bg-danger text-white rounded-3 shadow">
+                    <h2 class="mb-3" data-en="Emergency SOS" data-hi="आपातकालीन SOS">Emergency SOS</h2>
+                    <button class="btn btn-light btn-lg pulse-animation" id="sosButton">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <span data-en="SEND SOS" data-hi="SOS भेजें">SEND SOS</span>
+                    </button>
+                    <p class="mt-2 small" data-en="Tap to share your location with emergency contacts" data-hi="आपातकालीन संपर्कों के साथ अपना स्थान साझा करने के लिए टैप करें">
+                        Tap to share your location with emergency contacts
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Assistant Section -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">
+                            <i class="fas fa-robot me-2"></i>
+                            <span data-en="AI Emergency Assistant" data-hi="AI आपातकालीन सहायक">AI Emergency Assistant</span>
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" id="emergencyInput" 
+                                   placeholder="Describe your emergency (e.g., fire, earthquake, flood)">
+                            <button class="btn btn-primary" id="askAI">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                            <button class="btn btn-success" id="voiceInput">
+                                <i class="fas fa-microphone"></i>
+                            </button>
+                        </div>
+                        <div id="aiResponse" class="ai-response-box d-none">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <strong>AI Response:</strong>
+                                <button class="btn btn-sm btn-outline-primary" id="speakResponse">
+                                    <i class="fas fa-volume-up"></i> Speak
+                                </button>
+                            </div>
+                            <div id="responseText"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <h4 class="mb-3" data-en="Quick Actions" data-hi="त्वरित कार्य">Quick Actions</h4>
+                <div class="row g-3">
+                    <div class="col-6 col-md-3">
+                        <button class="btn btn-outline-danger w-100 h-100 quick-action-btn" data-bs-toggle="modal" data-bs-target="#qrModal">
+                            <i class="fas fa-qrcode fa-2x mb-2"></i>
+                            <div data-en="Emergency ID" data-hi="आपातकालीन ID">Emergency ID</div>
+                        </button>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <button class="btn btn-outline-info w-100 h-100 quick-action-btn" id="findHelpBtn">
+                            <i class="fas fa-map-marker-alt fa-2x mb-2"></i>
+                            <div data-en="Find Help" data-hi="सहायता खोजें">Find Help</div>
+                        </button>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <button class="btn btn-outline-success w-100 h-100 quick-action-btn" data-bs-toggle="modal" data-bs-target="#guidesModal">
+                            <i class="fas fa-book fa-2x mb-2"></i>
+                            <div data-en="Safety Guides" data-hi="सुरक्षा गाइड">Safety Guides</div>
+                        </button>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <button class="btn btn-outline-warning w-100 h-100 quick-action-btn" data-bs-toggle="modal" data-bs-target="#quizModal">
+                            <i class="fas fa-trophy fa-2x mb-2"></i>
+                            <div data-en="Safety Quiz" data-hi="सुरक्षा प्रश्नोत्तरी">Safety Quiz</div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Help Map Section -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card shadow">
+                    <div class="card-header bg-info text-white">
+                        <h4 class="mb-0">
+                            <i class="fas fa-map me-2"></i>
+                            <span data-en="Nearby Help Centers" data-hi="नजदीकी सहायता केंद्र">Nearby Help Centers</span>
+                        </h4>
+                    </div>
+                    <div class="card-body p-0">
+                        <div id="map" style="height: 400px; width: 100%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- QR Code Modal -->
+    <div class="modal fade" id="qrModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">
+                        <i class="fas fa-qrcode me-2"></i>
+                        <span data-en="Emergency ID Generator" data-hi="आपातकालीन ID जेनरेटर">Emergency ID Generator</span>
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="emergencyForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" data-en="Full Name" data-hi="पूरा नाम">Full Name</label>
+                                <input type="text" class="form-control" id="fullName" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" data-en="Blood Group" data-hi="रक्त समूह">Blood Group</label>
+                                <select class="form-control" id="bloodGroup" required>
+                                    <option value="">Select</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" data-en="Emergency Contact" data-hi="आपातकालीन संपर्क">Emergency Contact</label>
+                                <input type="tel" class="form-control" id="emergencyContact" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" data-en="Age" data-hi="आयु">Age</label>
+                                <input type="number" class="form-control" id="age" required>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label" data-en="Medical Allergies" data-hi="चिकित्सा एलर्जी">Medical Allergies</label>
+                                <textarea class="form-control" id="allergies" rows="2"></textarea>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label" data-en="Additional Notes" data-hi="अतिरिक्त नोट्स">Additional Notes</label>
+                                <textarea class="form-control" id="notes" rows="2"></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-danger w-100">
+                            <i class="fas fa-qrcode me-2"></i>
+                            <span data-en="Generate Emergency ID" data-hi="आपातकालीन ID बनाएं">Generate Emergency ID</span>
+                        </button>
+                    </form>
+                    <div id="qrResult" class="text-center mt-4 d-none">
+                        <div id="qrcode"></div>
+                        <div class="mt-3">
+                            <button class="btn btn-success me-2" id="downloadQR">
+                                <i class="fas fa-download me-1"></i>Download
+                            </button>
+                            <button class="btn btn-info" id="printQR">
+                                <i class="fas fa-print me-1"></i>Print
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Safety Guides Modal -->
+    <div class="modal fade" id="guidesModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">
+                        <i class="fas fa-book me-2"></i>
+                        <span data-en="Safety Guides" data-hi="सुरक्षा गाइड">Safety Guides</span>
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-action" data-guide="earthquake">
+                            <i class="fas fa-home me-2"></i>
+                            <span data-en="Earthquake Safety Guide" data-hi="भूकंप सुरक्षा गाइड">Earthquake Safety Guide</span>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action" data-guide="flood">
+                            <i class="fas fa-water me-2"></i>
+                            <span data-en="Flood Safety Guide" data-hi="बाढ़ सुरक्षा गाइड">Flood Safety Guide</span>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action" data-guide="fire">
+                            <i class="fas fa-fire me-2"></i>
+                            <span data-en="Fire Safety Guide" data-hi="आग सुरक्षा गाइड">Fire Safety Guide</span>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action" data-guide="cyclone">
+                            <i class="fas fa-wind me-2"></i>
+                            <span data-en="Cyclone Safety Guide" data-hi="चक्रवात सुरक्षा गाइड">Cyclone Safety Guide</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div class="modal fade" id="quizModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title">
+                        <i class="fas fa-trophy me-2"></i>
+                        <span data-en="Daily Safety Quiz" data-hi="दैनिक सुरक्षा प्रश्नोत्तरी">Daily Safety Quiz</span>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="quizStats" class="mb-3">
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <div class="badge bg-primary fs-6">
+                                    <div>Streak</div>
+                                    <div id="streakCount">0</div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="badge bg-success fs-6">
+                                    <div>Score</div>
+                                    <div id="totalScore">0</div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="badge bg-warning fs-6">
+                                    <div>Badges</div>
+                                    <div id="badgeCount">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="quizContainer">
+                        <div id="questionCard" class="card">
+                            <div class="card-body">
+                                <h6 class="card-title" id="questionText"></h6>
+                                <div id="optionsContainer"></div>
+                                <div class="mt-3">
+                                    <button class="btn btn-primary" id="submitAnswer" disabled>Submit Answer</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="quizResult" class="d-none text-center">
+                        <h4 id="resultMessage"></h4>
+                        <button class="btn btn-warning" id="nextQuestion">Next Question</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
